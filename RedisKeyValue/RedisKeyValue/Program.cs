@@ -1,20 +1,33 @@
-﻿using RedisKeyValue.Model;
-using ServiceStack.Redis;
+﻿using RedisKeyValue.Action;
+using RedisKeyValue.Faker;
+using static System.Console;
 
 var connection = "localhost:6379";
+ClientFaker clientFaker = new();
+var execute = new Execute();
 
-var cpfOne = "12345678910";
-var clientOne = new Client(cpfOne) { Document = "123", Name = "Paiva" };
-
-var cpfTwo = "12345678911";
-var clientTwo = new Client(cpfTwo) { Document = "456", Name = "Raphael" };
-
-using (var redisClient = new RedisClient(connection))
+try
 {
-    redisClient.Set<Client>(clientOne.Cpf.ToString(), clientOne);
-    redisClient.Set<Client>(clientTwo.Cpf, clientTwo);
-
-    var clientX = redisClient.Get<Client>(clientOne.Cpf);
+    execute.InsertClient(clientFaker.CreateClient(), connection);
+}
+catch (Exception e)
+{
+    WriteLine(e);
+    throw;
 }
 
-Console.Read();
+try
+{
+    var client = execute.GetClient("123456789101", connection);
+    if (client != null)
+        WriteLine(client.Cpf);
+    else
+        WriteLine("Cliente não encontrado!");
+}
+catch (Exception e)
+{
+    WriteLine(e);
+    throw;
+}
+
+ReadLine();
