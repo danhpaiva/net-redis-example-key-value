@@ -5,7 +5,7 @@ using static System.Console;
 
 string? connection = ConfigurationManager.AppSettings["connectionString"] ;
 ClientFaker clientFaker = new();
-var execute = new Execute();
+Execute execute = new();
 
 try
 {
