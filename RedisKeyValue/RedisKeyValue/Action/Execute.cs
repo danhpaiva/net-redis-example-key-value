@@ -5,7 +5,7 @@ namespace RedisKeyValue.Action
 {
     public class Execute
     {
-        public void InsertClient(Client client, string connection)
+        public void InsertClient(Client client, string? connection)
         {
             using (var redisClient = new RedisClient(connection))
             {
@@ -13,7 +13,7 @@ namespace RedisKeyValue.Action
             }
         }
 
-        public Client GetClient(string cpf, string connection)
+        public Client GetClient(string cpf, string? connection)
         {
             using (var redisClient = new RedisClient(connection))
             {

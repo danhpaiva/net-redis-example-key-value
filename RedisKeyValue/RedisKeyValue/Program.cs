@@ -3,32 +3,32 @@ using RedisKeyValue.Faker;
 using System.Configuration;
 using static System.Console;
 
-var connection = ConfigurationManager.AppSettings["connectionString"] ;
+string? connection = ConfigurationManager.AppSettings["connectionString"] ;
 ClientFaker clientFaker = new();
 var execute = new Execute();
 
 try
 {
-    execute.InsertClient(clientFaker.CreateClient(), connection);
+    var client = clientFaker.CreateClient();
+    execute.InsertClient(client, connection);
+    WriteLine($"Cliente {client.Name} inserido com sucesso no redis.");
 }
 catch (Exception e)
 {
-    WriteLine(e);
-    throw;
+    WriteLine($"Erro ao tentar cadastrar cliente no Redis{e}");
 }
 
 try
 {
-    var client = execute.GetClient("123456789101", connection);
+    var client = execute.GetClient("12345678910", connection);
     if (client != null)
-        WriteLine(client.Cpf);
+        WriteLine($"Cliente {client.Cpf} encontrado no redis");
     else
         WriteLine("Cliente não encontrado!");
 }
 catch (Exception e)
 {
-    WriteLine(e);
-    throw;
+    WriteLine($"Erro ao resgatar cliente do Redis: {e}");
 }
 
 ReadLine();
