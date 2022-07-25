@@ -1,8 +1,9 @@
 ﻿using RedisKeyValue.Action;
 using RedisKeyValue.Faker;
+using System.Configuration;
 using static System.Console;
 
-var connection = "localhost:6379";
+var connection = ConfigurationManager.AppSettings["connectionString"] ;
 ClientFaker clientFaker = new();
 var execute = new Execute();
 
